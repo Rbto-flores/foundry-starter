@@ -20,6 +20,7 @@ contract HelperConfig is Script {
 
     uint32 public constant SEPOLIA_CHAIN_ID = 11155111;
     uint8 public constant MAINNET_CHAIN_ID = 1;
+    uint32 public constant BASE_CHAIN_ID = 8453;
 
     struct NetworkConfig {
         address priceFeedAddress;
@@ -30,6 +31,8 @@ contract HelperConfig is Script {
             activeNetworkConfig = getSepoliaEthConfig();
         } else if (block.chainid == MAINNET_CHAIN_ID) {
             activeNetworkConfig = getMainnetEthConfig();
+        } else if (block.chainid == BASE_CHAIN_ID) {
+            activeNetworkConfig = getBaseEthConfig();
         } else {
             activeNetworkConfig = getOrCreateAnvilEthConfig();
         }
@@ -51,6 +54,15 @@ contract HelperConfig is Script {
         });
 
         return ethConfig;
+    }
+
+    function getBaseEthConfig() public pure returns (NetworkConfig memory) {
+        //price feed address
+        NetworkConfig memory baseConfig = NetworkConfig({
+            priceFeedAddress: 0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70
+        });
+
+        return baseConfig;
     }
 
     function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
